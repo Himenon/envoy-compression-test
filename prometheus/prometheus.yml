@@ -4,3 +4,12 @@ scrape_configs:
   - job_name: "web"
     static_configs:
       - targets: ["web:80"]
+
+  - job_name: "envoy"
+    metrics_path: /stats/prometheus
+    scheme: http
+    static_configs:
+      - targets:
+          - "gateway:9090"
+        labels:
+          service: gateway

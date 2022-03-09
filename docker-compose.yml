@@ -9,6 +9,7 @@ services:
       - ./envoy/envoy.yaml:/etc/envoy/envoy.yaml
     ports:
       - "8000:8000"
+      - "8001:9090"
 
   web:
     build:
