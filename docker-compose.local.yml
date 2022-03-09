@@ -10,15 +10,6 @@ services:
     ports:
       - "8000:8000"
 
-  nginx:
-    image: nginx:stable
-    networks:
-      - envoymesh
-    volumes:
-      - ./nginx/nginx.local.conf:/etc/nginx/nginx.conf
-    ports:
-      - "9000:9000"
-
   grafana:
     image: grafana/grafana-oss:8.3.3
     networks:

@@ -30,33 +30,6 @@ static_resources:
                           route:
                             cluster: web_cluster
                 http_filters:
-                  # - name: envoy.filters.http.local_ratelimit
-                  #   typed_config:
-                  #     "@type": type.googleapis.com/udpa.type.v1.TypedStruct
-                  #     type_url: type.googleapis.com/envoy.extensions.filters.http.local_ratelimit.v3.LocalRateLimit
-                  #     value:
-                  #       stat_prefix: http_local_rate_limiter
-                  #       # 10 req/min
-                  #       token_bucket:
-                  #         max_tokens: 200
-                  #         tokens_per_fill: 20
-                  #         fill_interval: 1s
-                  #       filter_enabled:
-                  #         runtime_key: local_rate_limit_enabled
-                  #         default_value:
-                  #           numerator: 100
-                  #           denominator: HUNDRED
-                  #       filter_enforced:
-                  #         runtime_key: local_rate_limit_enforced
-                  #         default_value:
-                  #           numerator: 100
-                  #           denominator: HUNDRED
-                  #       response_headers_to_add:
-                  #         - append: false
-                  #           header:
-                  #             key: x-local-rate-limit
-                  #             value: "true"
-                  #       local_rate_limit_per_downstream_connection: false
                   - name: envoy.filters.http.router
 
   clusters:
