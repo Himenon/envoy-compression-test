@@ -1,0 +1,13 @@
+apiVersion: 1
+
+providers:
+  - name: 'Access Log Monitoring'
+    orgId: 1
+    folder: 'Test'
+    type: file
+    disableDeletion: true
+    updateIntervalSeconds: 5
+    allowUiUpdates: true
+    options:
+      path: /etc/grafana/provisioning/dashboards/access_log.json
+      foldersFromFilesStructure: false 

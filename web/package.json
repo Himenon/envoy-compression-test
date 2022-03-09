@@ -1,0 +1,33 @@
+{
+  "name": "web",
+  "private": true,
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "yarn run server",
+    "server": "ts-node -r tsconfig-paths/register ./src/server.ts",
+    "build": "cross-env TS_NODE_PROJECT=\"tsconfig-for-webpack-config.json\" webpack --config webpack.server.config.ts"
+  },
+  "dependencies": {
+    "fastify": "^3.25.3",
+    "long": "^5.2.0",
+    "pino-pretty": "^7.3.0",
+    "prom-client": "^14.0.1",
+    "regenerator-runtime": "^0.13.9"
+  },
+  "devDependencies": {
+    "@swc/core": "^1.2.127",
+    "@swc/helpers": "^0.3.2",
+    "@types/node": "^17.0.8",
+    "cross-env": "^7.0.3",
+    "prettier": "^2.5.1",
+    "swc-loader": "^0.1.15",
+    "ts-node": "^10.4.0",
+    "tsconfig-paths": "^3.12.0",
+    "tslib": "^2.3.1",
+    "typescript": "^4.5.4",
+    "webpack": "^5.65.0",
+    "webpack-cli": "^4.9.1"
+  }
+}

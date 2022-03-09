@@ -1,0 +1,7 @@
+node_modules
+*.log
+*.swc
+*dist*
+*build*
+*.bin
+.data

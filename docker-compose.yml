@@ -1,0 +1,58 @@
+version: "3.7"
+services:
+  envoy:
+    # https://github.com/envoyproxy/envoy/commit/a2a1e3eed4214a38608ec223859fcfa8fb679b14
+    image: envoyproxy/envoy-dev:a2a1e3eed4214a38608ec223859fcfa8fb679b14
+    networks:
+      - envoymesh
+    volumes:
+      - ./envoy/envoy.yaml:/etc/envoy/envoy.yaml
+    ports:
+      - "8000:8000"
+
+  nginx:
+    image: nginx:stable
+    networks:
+      - envoymesh
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - "9000:9000"
+
+  web:
+    build:
+      context: web
+      dockerfile: Dockerfile
+    networks:
+      - envoymesh
+    expose:
+      - 80
+    environment:
+      - PORT=80
+    ports:
+      - "10000:80"
+
+  grafana:
+    image: grafana/grafana-oss:8.3.3
+    networks:
+      - envoymesh
+    ports:
+      - "5000:3000"
+    depends_on:
+      - prometheus
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning
+
+  prometheus:
+    image: prom/prometheus:v2.32.1
+    networks:
+      - envoymesh
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    depends_on:
+      - web
+
+networks:
+  envoymesh: {}
