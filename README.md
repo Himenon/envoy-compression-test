@@ -2,36 +2,7 @@
 
 ## Usage
 
-```bash
-$ docker -v
-Docker version 20.10.11, build dea9396
-```
-
-**Step 1**
-
-```bash
-$ docker compose build
-```
-
-**Step 2**
-
-```bash
-$ docker compose up
-```
-
-**Step 3**
-
-```bash
-# Via Envoy
-$ echo "GET http://localhost:8000/envoy" | vegeta attack -rate=20/s -duration=300s -timeout=10s | tee results.bin | vegeta report
-
-# Via nginx
-$ echo "GET http://localhost:9000/nginx" | vegeta attack -rate=20/s -duration=300s -timeout=10s | tee results.bin | vegeta report
-```
-
-**Step 4**
-
-try load test
+* https://grafana.com/grafana/dashboards/6693
 
 ## Load Test
 

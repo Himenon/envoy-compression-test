@@ -10,6 +10,6 @@ scrape_configs:
     scheme: http
     static_configs:
       - targets:
-          - "gateway:9090"
+          - "envoy:9090"
         labels:
-          service: gateway
+          service: envoy
