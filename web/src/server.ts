@@ -1,19 +1,18 @@
 import fastify from "fastify";
 import * as Metrics from "./metrics";
+import * as Fake from "./fake";
 
 const applicationName = "nodejs-http-server";
 
 process.title = applicationName;
 
+
+const data = Fake.generateRandomObject(10);
+
 const createServer = () => {
   const server = fastify({ logger: true });
-
   server.get("/", async (request, reply) => {
-
-    setTimeout(() => {
-      reply.type("text/html").send("<html><body><h1>Hello world!</h1></body></html>");  
-    }, 1000);
-    
+    reply.type("application/json").send(data);
   });
 
   server.get("/nginx", async (request, reply) => {

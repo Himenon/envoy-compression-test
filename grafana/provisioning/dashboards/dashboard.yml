@@ -1,7 +1,7 @@
 apiVersion: 1
 
 providers:
-  - name: 'Access Log Monitoring'
+  - name: 'Envoy Proxy'
     orgId: 1
     folder: 'Test'
     type: file
@@ -9,5 +9,5 @@ providers:
     updateIntervalSeconds: 5
     allowUiUpdates: true
     options:
-      path: /etc/grafana/provisioning/dashboards/access_log.json
+      path: /etc/grafana/provisioning/dashboards/envoy.json
       foldersFromFilesStructure: false 
