@@ -12,6 +12,7 @@
   "dependencies": {
     "@faker-js/faker": "^6.0.0-beta.0",
     "fastify": "^3.25.3",
+    "fastify-compress": "^4.0.1",
     "long": "^5.2.0",
     "pino-pretty": "^7.3.0",
     "prom-client": "^14.0.1",

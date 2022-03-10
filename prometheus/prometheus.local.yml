@@ -5,11 +5,20 @@ scrape_configs:
     static_configs:
       - targets: ["host.docker.internal:3000"]
 
-  - job_name: "envoy"
+  - job_name: "envoy-gateway"
     metrics_path: /stats/prometheus
     scheme: http
     static_configs:
       - targets:
-          - "envoy:9090"
+          - "envoy-gateway:9090"
+        labels:
+          service: envoy
+
+  - job_name: "envoy-proxy"
+    metrics_path: /stats/prometheus
+    scheme: http
+    static_configs:
+      - targets:
+          - "envoy-proxy:9090"
         labels:
           service: envoy

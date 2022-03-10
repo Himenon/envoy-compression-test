@@ -11,3 +11,14 @@ providers:
     options:
       path: /etc/grafana/provisioning/dashboards/envoy.json
       foldersFromFilesStructure: false 
+
+  - name: 'Monitoring Compression'
+    orgId: 2
+    folder: 'Test'
+    type: file
+    disableDeletion: true
+    updateIntervalSeconds: 5
+    allowUiUpdates: true
+    options:
+      path: /etc/grafana/provisioning/dashboards/monitoring.json
+      foldersFromFilesStructure: false 

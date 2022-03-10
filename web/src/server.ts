@@ -1,16 +1,18 @@
 import fastify from "fastify";
 import * as Metrics from "./metrics";
 import * as Fake from "./fake";
+import compress from "fastify-compress";
 
 const applicationName = "nodejs-http-server";
 
 process.title = applicationName;
 
-
 const data = Fake.generateRandomObject(10);
 
 const createServer = () => {
-  const server = fastify({ logger: true });
+  const server = fastify({ logger: false });
+
+  // server.register(compress);
   server.get("/", async (request, reply) => {
     reply.type("application/json").send(data);
   });
