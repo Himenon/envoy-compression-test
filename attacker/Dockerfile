@@ -1,10 +1,5 @@
-FROM ubuntu:18.04 AS INSTALLER
+FROM ubuntu:18.04
 WORKDIR /app
 COPY ./setup.sh .
-RUN apt update && apt install wget --yes
+RUN apt update && apt install wget curl --yes
 RUN ./setup.sh
-
-FROM ubuntu:18.04
-
-WORKDIR /app
-COPY --from=INSTALLER /app/vegeta ./
