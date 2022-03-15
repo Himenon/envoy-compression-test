@@ -15,7 +15,7 @@ docker compose up -d
 ### Web Server Setup
 
 ```bash
-docker compose run web sh
+docker compose exec web sh
 
 # In container
 yarn start
@@ -24,7 +24,7 @@ yarn start
 ### Attacker Setup
 
 ```bash
-docker compose run attacker bash
+docker compose exec attacker bash
 
 # Check
 curl http://envoy-gateway:8000/ping

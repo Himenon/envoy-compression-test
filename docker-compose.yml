@@ -6,7 +6,9 @@ services:
       dockerfile: Dockerfile
     networks:
       - envoymesh
-    command: ["echo", "'docker compose run attacker bash'"]
+    command: ["tail", "-f", "/dev/null"]
+    depends_on:
+      - web
 
   envoy-gateway:
     # https://github.com/envoyproxy/envoy/commit/a2a1e3eed4214a38608ec223859fcfa8fb679b14
@@ -19,6 +21,8 @@ services:
       - 8000
       - 9090
     restart: "always"
+    depends_on:
+      - web
 
   envoy-proxy:
     # https://github.com/envoyproxy/envoy/commit/a2a1e3eed4214a38608ec223859fcfa8fb679b14
@@ -31,6 +35,8 @@ services:
       - 8000
       - 9090
     restart: "always"
+    depends_on:
+      - web
 
   web:
     build:
@@ -40,8 +46,11 @@ services:
       - envoymesh
     environment:
       - PORT=80
+    expose:
+      - 80
     volumes:
       - ./web:/app
+    command: ["tail", "-f", "/dev/null"]
 
   grafana:
     image: grafana/grafana-oss:8.3.3
@@ -62,8 +71,6 @@ services:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
       - "9090:9090"
-    depends_on:
-      - web
 
 networks:
   envoymesh: {}
