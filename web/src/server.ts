@@ -44,10 +44,11 @@ const createServer = () => {
 const start = async () => {
   const server = createServer();
   try {
-    await server.listen({
+    const res = await server.listen({
       host: "0.0.0.0",
       port: parseInt(`${process.env.PORT}`, 10) || 3000,
     });
+    console.log(`Run Server: ${res}`);
   } catch (err) {
     server.log.error(err);
     process.exit(1);
