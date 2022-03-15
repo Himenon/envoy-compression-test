@@ -4,9 +4,7 @@ ENV PORT 80
 
 WORKDIR /app
 COPY . /app
-# RUN yarn install && yarn build
 RUN yarn install
-WORKDIR /app
 EXPOSE 80/tcp
 # CMD ["node", "/app/server.js"]
-CMD ["yarn", "start"]
+# CMD ["yarn", "start"]

@@ -9,6 +9,8 @@ process.title = applicationName;
 
 const data = Fake.generateRandomObject(10);
 
+console.log(`Prepare Large Data Cached: ${Buffer.byteLength(JSON.stringify(data)) / 1000} KB.`);
+
 const createServer = () => {
   const server = fastify({ logger: false });
 
@@ -17,20 +19,8 @@ const createServer = () => {
     reply.type("application/json").send(data);
   });
 
-  server.get("/nginx", async (request, reply) => {
-    Metrics.AccessCounter.labels({
-      method: "GET",
-      path: "/nginx",
-    }).inc();
-    reply.send({ hello: "world" });
-  });
-
-  server.get("/envoy", async (request, reply) => {
-    Metrics.AccessCounter.labels({
-      method: "GET",
-      path: "/envoy",
-    }).inc();
-    reply.send({ hello: "world" });
+  server.get("/ping", async (request, reply) => {
+    reply.send("pong");
   });
 
   server.get("/metrics", async (req, reply) => {

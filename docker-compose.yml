@@ -4,13 +4,9 @@ services:
     build:
       context: attacker
       dockerfile: Dockerfile
-    depends_on:
-      - web
-      - envoy-gateway
-      - envoy-proxy
     networks:
       - envoymesh
-    command: ['echo "docker compose run attacker bash"']
+    command: ["echo", "'docker compose run attacker bash'"]
 
   envoy-gateway:
     # https://github.com/envoyproxy/envoy/commit/a2a1e3eed4214a38608ec223859fcfa8fb679b14
@@ -19,10 +15,10 @@ services:
       - envoymesh
     volumes:
       - ./envoy-gateway/envoy.yaml:/etc/envoy/envoy.yaml
-    ports:
-      - "8000:8000"
-    depends_on:
-      - web
+    expose:
+      - 8000
+      - 9090
+    restart: "always"
 
   envoy-proxy:
     # https://github.com/envoyproxy/envoy/commit/a2a1e3eed4214a38608ec223859fcfa8fb679b14
@@ -31,10 +27,10 @@ services:
       - envoymesh
     volumes:
       - ./envoy-proxy/envoy.yaml:/etc/envoy/envoy.yaml
-    ports:
-      - "8001:8000"
-    depends_on:
-      - web
+    expose:
+      - 8000
+      - 9090
+    restart: "always"
 
   web:
     build:
@@ -46,7 +42,6 @@ services:
       - PORT=80
     volumes:
       - ./web:/app
-    command: ['echo "docker compose run web sh"']
 
   grafana:
     image: grafana/grafana-oss:8.3.3

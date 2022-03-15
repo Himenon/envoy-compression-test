@@ -1,24 +1,24 @@
 apiVersion: 1
 
 providers:
-  - name: 'Envoy Proxy'
+  - name: "Envoy Proxy"
     orgId: 1
-    folder: 'Test'
+    folder: "Test"
     type: file
     disableDeletion: true
     updateIntervalSeconds: 5
     allowUiUpdates: true
     options:
       path: /etc/grafana/provisioning/dashboards/envoy.json
-      foldersFromFilesStructure: false 
+      foldersFromFilesStructure: false
 
-  - name: 'Monitoring Compression'
+  - name: "Monitoring Compression"
     orgId: 1
-    folder: 'Test'
+    folder: "Test"
     type: file
     disableDeletion: true
     updateIntervalSeconds: 5
     allowUiUpdates: true
     options:
       path: /etc/grafana/provisioning/dashboards/monitoring.json
-      foldersFromFilesStructure: false 
+      foldersFromFilesStructure: false
