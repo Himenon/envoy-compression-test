@@ -13,7 +13,7 @@ providers:
       foldersFromFilesStructure: false 
 
   - name: 'Monitoring Compression'
-    orgId: 2
+    orgId: 1
     folder: 'Test'
     type: file
     disableDeletion: true

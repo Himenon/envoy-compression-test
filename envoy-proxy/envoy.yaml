@@ -55,7 +55,7 @@ static_resources:
                         typed_config:
                           "@type": type.googleapis.com/envoy.extensions.compression.gzip.compressor.v3.Gzip
                           # 1-9間。Memをたくさん使って高圧縮になる
-                          memory_level: 9
+                          memory_level: 1
                           # メモリ使用量を犠牲にして高圧縮になる
                           window_bits: 12
                           # 最速でやる
