@@ -76,8 +76,8 @@ static_resources:
               - endpoint:
                   address:
                     socket_address:
-                      # address: web
-                      # port_value: 80
+                      address: web
+                      port_value: 80
                       # Local
-                      address: host.docker.internal
-                      port_value: 3000
+                      # address: host.docker.internal
+                      # port_value: 3000

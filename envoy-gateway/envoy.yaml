@@ -45,4 +45,3 @@ static_resources:
                     socket_address:
                       address: envoy-proxy
                       port_value: 8000
-
