@@ -30,10 +30,20 @@ static_resources:
                       domains:
                         - "*"
                       routes:
-                        - match:
-                            prefix: "/"
-                          route:
-                            cluster: envoy_proxy_compression
+                      - match:
+                          prefix: "/"
+                          headers:
+                          - name: "target"
+                            exact_match: "pure"
+                        route:
+                          cluster: envoy_proxy_pure
+                      - match:
+                          prefix: "/"
+                          headers:
+                          - name: target
+                            exact_match: compression
+                        route:
+                          cluster: envoy_proxy_compression
                 http_filters:
                   - name: envoy.filters.http.router
 
@@ -62,4 +72,3 @@ static_resources:
                     socket_address:
                       address: envoy-proxy-compression
                       port_value: 8000
-
