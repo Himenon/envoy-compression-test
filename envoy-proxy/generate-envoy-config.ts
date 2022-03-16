@@ -113,7 +113,38 @@ const static_resources = {
                       routes: [
                         {
                           match: {
-                            prefix: "/",
+                            path: "/ping",
+                          },
+                          route: {
+                            cluster: "web_cluster",
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      name: "local_service",
+                      domains: ["*"],
+                      routes: [
+                        {
+                          match: {
+                            path: "/envoy-proxy-gzip",
+                          },
+                          route: {
+                            cluster: "web_cluster",
+                          },
+                        },
+                      ],
+                      typed_per_filter_config: {
+                        [compressorFilter.name]: compressorFilter.typed_config,
+                      },
+                    },
+                    {
+                      name: "local_service",
+                      domains: ["*"],
+                      routes: [
+                        {
+                          match: {
+                            path: "/upstream-gzip",
                           },
                           route: {
                             cluster: "web_cluster",
@@ -124,7 +155,7 @@ const static_resources = {
                   ],
                 },
                 http_filters: [
-                  compressorFilter,
+                  // compressorFilter, // Global Filter
                   {
                     name: "envoy.filters.http.router",
                   },

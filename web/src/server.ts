@@ -14,8 +14,13 @@ console.log(`Prepare Large Data Cached: ${Buffer.byteLength(JSON.stringify(data)
 const createServer = () => {
   const server = fastify({ logger: false });
 
-  // server.register(compress);
-  server.get("/", async (request, reply) => {
+  server.register(compress, { global: false });
+
+  server.get("/envoy-proxy-gzip", { compress: false }, async (request, reply) => {
+    reply.type("application/json").send(data);
+  });
+
+  server.get("/upstream-gzip", { compress: {} }, async (request, reply) => {
     reply.type("application/json").send(data);
   });
 
@@ -34,11 +39,11 @@ const createServer = () => {
 const start = async () => {
   const server = createServer();
   try {
-    const res = await server.listen({
+    const address = await server.listen({
       host: "0.0.0.0",
       port: parseInt(`${process.env.PORT}`, 10) || 3000,
     });
-    console.log(`Run Server: ${res}`);
+    console.log(`Run Server: ${address}`);
   } catch (err) {
     server.log.error(err);
     process.exit(1);
