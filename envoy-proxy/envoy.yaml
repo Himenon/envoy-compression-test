@@ -3,7 +3,6 @@ admin:
     socket_address:
       address: 0.0.0.0
       port_value: 9090
-
 static_resources:
   listeners:
     - name: main
@@ -15,29 +14,29 @@ static_resources:
         - filters:
             - name: envoy.filters.network.http_connection_manager
               typed_config:
-                "@type": type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager
+                '@type': type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager
                 stat_prefix: ingress_http
                 codec_type: AUTO
                 access_log:
                   - name: envoy.file_access_log
                     typed_config:
-                      "@type": type.googleapis.com/envoy.extensions.access_loggers.file.v3.FileAccessLog
+                      '@type': type.googleapis.com/envoy.extensions.access_loggers.file.v3.FileAccessLog
                       path: /dev/stdout
                 route_config:
                   name: local_route
                   virtual_hosts:
                     - name: local_service
                       domains:
-                        - "*"
+                        - '*'
                       routes:
                         - match:
-                            prefix: "/"
+                            prefix: /
                           route:
                             cluster: web_cluster
                 http_filters:
                   - name: envoy.filters.http.compressor
                     typed_config:
-                      "@type": type.googleapis.com/envoy.extensions.filters.http.compressor.v3.Compressor
+                      '@type': type.googleapis.com/envoy.extensions.filters.http.compressor.v3.Compressor
                       response_direction_config:
                         common_config:
                           min_content_length: 100
@@ -58,21 +57,15 @@ static_resources:
                       compressor_library:
                         name: for_response
                         typed_config:
-                          "@type": type.googleapis.com/envoy.extensions.compression.gzip.compressor.v3.Gzip
-                          # 1-9間。Memをたくさん使って高圧縮になる
+                          '@type': type.googleapis.com/envoy.extensions.compression.gzip.compressor.v3.Gzip
                           memory_level: 1
-                          # メモリ使用量を犠牲にして高圧縮になる
                           window_bits: 12
-                          # 最速でやる
                           compression_level: BEST_SPEED
-                          # 遅いくせになんか圧縮率も悪い気がする
-                          # compression_level: BEST_COMPRESSION
                           compression_strategy: DEFAULT_STRATEGY
                   - name: envoy.filters.http.router
-
   clusters:
     - name: web_cluster
-      type: STRICT_DNS # static
+      type: STRICT_DNS
       lb_policy: ROUND_ROBIN
       load_assignment:
         cluster_name: web_cluster
@@ -83,6 +76,3 @@ static_resources:
                     socket_address:
                       address: web
                       port_value: 80
-                      # Local
-                      # address: host.docker.internal
-                      # port_value: 3000
