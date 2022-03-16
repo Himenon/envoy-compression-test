@@ -36,23 +36,23 @@ static_resources:
                           - name: "target"
                             exact_match: "pure"
                         route:
-                          cluster: envoy_proxy_pure
+                          cluster: envoy-proxy-pure
                       - match:
                           prefix: "/"
                           headers:
                           - name: target
                             exact_match: compression
                         route:
-                          cluster: envoy_proxy_compression
+                          cluster: envoy-proxy-compression
                 http_filters:
                   - name: envoy.filters.http.router
 
   clusters:
-    - name: envoy_proxy_pure
+    - name: envoy-proxy-pure
       type: STRICT_DNS
       lb_policy: ROUND_ROBIN
       load_assignment:
-        cluster_name: envoy_proxy_pure
+        cluster_name: envoy-proxy-pure
         endpoints:
           - lb_endpoints:
               - endpoint:
@@ -60,11 +60,11 @@ static_resources:
                     socket_address:
                       address: envoy-proxy-pure
                       port_value: 8000
-    - name: envoy_proxy_compression
+    - name: envoy-proxy-compression
       type: STRICT_DNS
       lb_policy: ROUND_ROBIN
       load_assignment:
-        cluster_name: envoy_proxy_compression
+        cluster_name: envoy-proxy-compression
         endpoints:
           - lb_endpoints:
               - endpoint:

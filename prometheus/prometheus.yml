@@ -12,7 +12,7 @@ scrape_configs:
       - targets:
           - "envoy-gateway:9090"
         labels:
-          service: envoy
+          service: envoy-gateway
 
   - job_name: "envoy-proxy-pure"
     metrics_path: /stats/prometheus
@@ -21,7 +21,7 @@ scrape_configs:
       - targets:
           - "envoy-proxy-pure:9090"
         labels:
-          service: envoy
+          service: envoy-proxy-pure
 
   - job_name: "envoy-proxy-compression"
     metrics_path: /stats/prometheus
@@ -30,4 +30,4 @@ scrape_configs:
       - targets:
           - "envoy-proxy-compression:9090"
         labels:
-          service: envoy
+          service: envoy-proxy-compression

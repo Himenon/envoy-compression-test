@@ -51,6 +51,8 @@ curl http://envoy-gateway:8000 -H "target: compression" -H "accept-encoding: gzi
 echo "GET http://envoy-gateway:8000" | ./vegeta attack -rate 1/1s -header "target: compression" -header "accept-encoding: gzip, deflate, br" > /dev/null
 ```
 
+Check Response Header: `transfer-encoding: chunked` or `content-encoding: *`
+
 ## Dashboard
 
 - Grafana: <http://localhost:5000>

@@ -14,7 +14,7 @@ console.log(`Prepare Large Data Cached: ${Buffer.byteLength(JSON.stringify(data)
 const createServer = () => {
   const server = fastify({ logger: false });
 
-  server.register(compress, { global: true });
+  server.register(compress, { global: true, zlibOptions: { level: 1 }, });
 
   server.get("/", async (request, reply) => {
     reply.type("application/json").send(data);

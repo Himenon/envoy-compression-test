@@ -58,9 +58,9 @@ static_resources:
                         name: for_response
                         typed_config:
                           '@type': type.googleapis.com/envoy.extensions.compression.gzip.compressor.v3.Gzip
-                          memory_level: 1
+                          memory_level: 3
                           window_bits: 12
-                          compression_level: BEST_SPEED
+                          compression_level: BEST_COMPRESSION
                           compression_strategy: DEFAULT_STRATEGY
                   - name: envoy.filters.http.router
   clusters:

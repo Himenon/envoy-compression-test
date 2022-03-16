@@ -22,6 +22,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": 3,
+  "iteration": 1647425005093,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -114,24 +115,13 @@
             "uid": "PBFA97CFB590B2093"
           },
           "exemplar": true,
-          "expr": "envoy_cluster_upstream_cx_tx_bytes_total",
+          "expr": "envoy_cluster_upstream_cx_tx_bytes_total{}",
           "format": "time_series",
-          "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "envoy-gateway",
-          "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "exemplar": true,
-          "expr": "sum(envoy_cluster_upstream_cx_tx_bytes_total{instance=\"envoy-proxy:9090\"})",
           "hide": false,
           "interval": "",
-          "legendFormat": "envoy-proxy",
-          "refId": "B"
+          "intervalFactor": 1,
+          "legendFormat": "",
+          "refId": "A"
         }
       ],
       "title": "Upstream -Sent",
@@ -221,7 +211,7 @@
           "instant": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "envoy-gateway",
+          "legendFormat": "{{instance}}",
           "refId": "A"
         }
       ],
@@ -439,7 +429,7 @@
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "envoy-gateway",
+          "legendFormat": "{{instance}}",
           "refId": "A"
         }
       ],
@@ -530,7 +520,7 @@
           "instant": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "envoy-gateway",
+          "legendFormat": "{{instance}}",
           "refId": "A"
         }
       ],
@@ -810,7 +800,30 @@
   "style": "dark",
   "tags": [],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "current": {
+          "selected": false,
+          "text": "envoy-gateway",
+          "value": "envoy-gateway"
+        },
+        "definition": "envoy_cluster_upstream_cx_tx_bytes_total",
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "name": "proxy_name",
+        "options": [],
+        "query": {
+          "query": "envoy_cluster_upstream_cx_tx_bytes_total",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 1,
+        "regex": ".*job=\"(.*?)\".*",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      }
+    ]
   },
   "time": {
     "from": "now-5m",
@@ -818,8 +831,8 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "envoy monitor",
+  "title": "Envoy Monitor",
   "uid": "sWlZ99Ynz",
-  "version": 6,
+  "version": 2,
   "weekStart": ""
 }
