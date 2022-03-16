@@ -22,7 +22,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": 3,
-  "iteration": 1647425005093,
+  "iteration": 1647429066335,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -37,7 +37,7 @@
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
-            "fillOpacity": 0,
+            "fillOpacity": 14,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -50,37 +50,24 @@
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
-            "spanNulls": false,
+            "showPoints": "never",
+            "spanNulls": true,
             "stacking": {
               "group": "A",
-              "mode": "none"
+              "mode": "normal"
             },
             "thresholdsStyle": {
               "mode": "off"
             }
           },
-          "mappings": [
-            {
-              "options": {
-                "match": "null",
-                "result": {
-                  "text": "N/A"
-                }
-              },
-              "type": "special"
-            }
-          ],
+          "mappings": [],
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
                 "color": "green",
                 "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           },
@@ -115,16 +102,28 @@
             "uid": "PBFA97CFB590B2093"
           },
           "exemplar": true,
-          "expr": "envoy_cluster_upstream_cx_tx_bytes_total{}",
+          "expr": "envoy_cluster_upstream_cx_tx_bytes_total{service=\"$proxy_name\", envoy_cluster_name=\"web_cluster\"}",
           "format": "time_series",
           "hide": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "",
+          "legendFormat": "{{service}} → {{envoy_cluster_name}}",
           "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "exemplar": true,
+          "expr": "envoy_cluster_upstream_cx_tx_bytes_total{service=\"envoy-gateway\", envoy_cluster_name=\"$proxy_name\"}",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "{{service}} → {{envoy_cluster_name}}",
+          "refId": "B"
         }
       ],
-      "title": "Upstream -Sent",
+      "title": "Upstream - Sent",
       "type": "timeseries"
     },
     {
@@ -138,7 +137,7 @@
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
-            "fillOpacity": 0,
+            "fillOpacity": 18,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -146,8 +145,11 @@
               "viz": false
             },
             "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
             "lineWidth": 1,
-            "pointSize": 5,
+            "pointSize": 1,
             "scaleDistribution": {
               "type": "linear"
             },
@@ -155,13 +157,24 @@
             "spanNulls": false,
             "stacking": {
               "group": "A",
-              "mode": "none"
+              "mode": "normal"
             },
             "thresholdsStyle": {
               "mode": "off"
             }
           },
-          "mappings": [],
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -185,7 +198,7 @@
         "x": 6,
         "y": 0
       },
-      "id": 15,
+      "id": 16,
       "links": [],
       "maxDataPoints": 100,
       "options": {
@@ -206,16 +219,28 @@
             "uid": "PBFA97CFB590B2093"
           },
           "exemplar": true,
-          "expr": "envoy_http_downstream_cx_tx_bytes_total",
+          "expr": "envoy_cluster_upstream_cx_rx_bytes_total{service=\"$proxy_name\", envoy_cluster_name=\"web_cluster\"}",
           "format": "time_series",
-          "instant": false,
+          "hide": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "{{instance}}",
+          "legendFormat": "",
           "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "exemplar": true,
+          "expr": "envoy_cluster_upstream_cx_rx_bytes_total{service=\"envoy-gateway\", envoy_cluster_name=\"$proxy_name\"}",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "B"
         }
       ],
-      "title": "Downstream Global - Sent",
+      "title": "Upstream - Received",
       "type": "timeseries"
     },
     {
@@ -267,7 +292,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "exemplar": true,
-          "expr": "envoy_server_memory_heap_size{}",
+          "expr": "envoy_server_memory_heap_size{service=\"$proxy_name\"}",
           "hide": false,
           "interval": "",
           "legendFormat": "{{instance}}",
@@ -326,7 +351,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "exemplar": true,
-          "expr": "envoy_server_memory_allocated{}",
+          "expr": "envoy_server_memory_allocated{service=\"$proxy_name\"}",
           "hide": false,
           "interval": "",
           "legendFormat": "{{instance}}",
@@ -347,7 +372,7 @@
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
-            "fillOpacity": 0,
+            "fillOpacity": 12,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -356,7 +381,7 @@
             },
             "lineInterpolation": "linear",
             "lineWidth": 1,
-            "pointSize": 5,
+            "pointSize": 1,
             "scaleDistribution": {
               "type": "linear"
             },
@@ -370,27 +395,14 @@
               "mode": "off"
             }
           },
-          "mappings": [
-            {
-              "options": {
-                "match": "null",
-                "result": {
-                  "text": "N/A"
-                }
-              },
-              "type": "special"
-            }
-          ],
+          "mappings": [],
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
                 "color": "green",
                 "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           },
@@ -404,7 +416,7 @@
         "x": 0,
         "y": 7
       },
-      "id": 16,
+      "id": 15,
       "links": [],
       "maxDataPoints": 100,
       "options": {
@@ -425,15 +437,16 @@
             "uid": "PBFA97CFB590B2093"
           },
           "exemplar": true,
-          "expr": "envoy_cluster_upstream_cx_rx_bytes_total",
+          "expr": "envoy_http_downstream_cx_tx_bytes_total{service=\"$proxy_name\", envoy_http_conn_manager_prefix=\"admin\"}",
           "format": "time_series",
+          "instant": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "{{instance}}",
+          "legendFormat": "upstream → {{instance}} → downstream",
           "refId": "A"
         }
       ],
-      "title": "Upstream - Received",
+      "title": "Downstream Global - Sent",
       "type": "timeseries"
     },
     {
@@ -447,7 +460,7 @@
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
-            "fillOpacity": 0,
+            "fillOpacity": 10,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -456,7 +469,7 @@
             },
             "lineInterpolation": "linear",
             "lineWidth": 1,
-            "pointSize": 5,
+            "pointSize": 1,
             "scaleDistribution": {
               "type": "linear"
             },
@@ -471,6 +484,7 @@
             }
           },
           "mappings": [],
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -515,12 +529,12 @@
             "uid": "PBFA97CFB590B2093"
           },
           "exemplar": true,
-          "expr": "envoy_http_downstream_cx_rx_bytes_total",
+          "expr": "envoy_http_downstream_cx_rx_bytes_total{service=\"$proxy_name\", envoy_http_conn_manager_prefix=\"admin\"}",
           "format": "time_series",
           "instant": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "{{instance}}",
+          "legendFormat": "downstream  → {{instance}} → upstream",
           "refId": "A"
         }
       ],
@@ -538,7 +552,7 @@
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
-            "fillOpacity": 10,
+            "fillOpacity": 13,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -562,6 +576,7 @@
             }
           },
           "mappings": [],
+          "min": -0.1,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -605,15 +620,29 @@
             "uid": "PBFA97CFB590B2093"
           },
           "exemplar": true,
-          "expr": "irate(envoy_cluster_upstream_rq_total{}[5s])",
+          "expr": "irate(envoy_cluster_upstream_rq_total{service=\"envoy-gateway\", envoy_cluster_name=\"$proxy_name\"}[1m])",
           "format": "time_series",
+          "hide": false,
           "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "{{instance}}",
+          "legendFormat": "{{instance}} → {{envoy_cluster_name}}",
           "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "exemplar": true,
+          "expr": "irate(envoy_cluster_upstream_rq_total{service=\"$proxy_name\", envoy_cluster_name=\"web_cluster\"}[1m])",
+          "hide": false,
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "{{instance}} → {{envoy_cluster_name}}",
+          "refId": "B"
         }
       ],
-      "title": "RPS",
+      "title": "Request Per Second",
       "type": "timeseries"
     },
     {
@@ -666,7 +695,32 @@
           },
           "unit": "decbytes"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "envoy-gateway:9090"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 7,
@@ -694,12 +748,25 @@
             "uid": "PBFA97CFB590B2093"
           },
           "exemplar": true,
-          "expr": "irate(envoy_cluster_upstream_cx_rx_bytes_total[10s])",
+          "expr": "irate(envoy_cluster_upstream_cx_rx_bytes_total{envoy_cluster_name=\"$proxy_name\"}[10s])",
           "format": "time_series",
+          "hide": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "{{instance}}",
+          "legendFormat": "",
           "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "exemplar": true,
+          "expr": "irate(envoy_cluster_upstream_cx_rx_bytes_total{envoy_cluster_name=\"web_cluster\", service=\"$proxy_name\"}[10s])",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "B"
         }
       ],
       "title": "Upstream Network Traffic (bytes)",
@@ -795,7 +862,7 @@
       "type": "timeseries"
     }
   ],
-  "refresh": "5s",
+  "refresh": "",
   "schemaVersion": 34,
   "style": "dark",
   "tags": [],
@@ -804,8 +871,8 @@
       {
         "current": {
           "selected": false,
-          "text": "envoy-gateway",
-          "value": "envoy-gateway"
+          "text": "envoy-proxy-pure",
+          "value": "envoy-proxy-pure"
         },
         "definition": "envoy_cluster_upstream_cx_tx_bytes_total",
         "hide": 0,
@@ -826,13 +893,13 @@
     ]
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Envoy Monitor",
   "uid": "sWlZ99Ynz",
-  "version": 2,
+  "version": 14,
   "weekStart": ""
 }
