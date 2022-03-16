@@ -32,19 +32,19 @@ curl http://envoy-gateway:8000/ping -H "target: compression"
 
 # Request  : envoy-gateway:8000 --------> envoy-proxy-pure:8000 --------> web:80
 # Response : envoy-gateway:8000 <-------- envoy-proxy-pure:8000 <-------- web:80
-echo "GET http://envoy-gateway:8000" | ./vegeta attack -rate 1/1s -H "target: pure" > /dev/null
+echo "GET http://envoy-gateway:8000" | ./vegeta attack -rate 1/1s -header "target: pure" > /dev/null
 
 # Request  : envoy-gateway:8000 --------> envoy-proxy-pure:8000 --------> web:80
-# Response : envoy-gateway:8000 <-(gzip)- envoy-proxy-pure:8000 <-------- web:80
-echo "GET http://envoy-gateway:8000?compression=gzip" | ./vegeta attack -rate 1/1s -H "target: pure" > /dev/null
+# Response : envoy-gateway:8000 <-------- envoy-proxy-pure:8000 <-(gzip)- web:80
+echo "GET http://envoy-gateway:8000" | ./vegeta attack -rate 1/1s -header "target: pure" -header "accept-encoding: gzip, deflate, br" > /dev/null
+
+# Request  : envoy-gateway:8000 --------> envoy-proxy-compression:8000 --------> web:80
+# Response : envoy-gateway:8000 <-(gzip)- envoy-proxy-compression:8000 <-------- web:80
+echo "GET http://envoy-gateway:8000" | ./vegeta attack -rate 1/1s -header "target: compression" > /dev/null
 
 # Request  : envoy-gateway:8000 --------> envoy-proxy-compression:8000 --------> web:80
 # Response : envoy-gateway:8000 <-(gzip)- envoy-proxy-compression:8000 <-(gzip)- web:80
-echo "GET http://envoy-gateway:8000?compression=gzip" | ./vegeta attack -rate 1/1s -H "target: compression" > /dev/null
-
-# Request  : envoy-gateway:8000 --------> envoy-proxy-compression:8000 --------> web:80
-# Response : envoy-gateway:8000 <-(gzip)- envoy-proxy-compression:8000 <-(gzip)- web:80
-echo "GET http://envoy-gateway:8000/non-compression-proxy?compress=gzip" | ./vegeta attack -rate 1/1s -H "target: compression" > /dev/null
+echo "GET http://envoy-gateway:8000" | ./vegeta attack -rate 1/1s -header "target: compression" -header "accept-encoding: gzip, deflate, br" > /dev/null
 ```
 
 ## Dashboard

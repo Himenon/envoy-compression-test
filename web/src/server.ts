@@ -14,14 +14,10 @@ console.log(`Prepare Large Data Cached: ${Buffer.byteLength(JSON.stringify(data)
 const createServer = () => {
   const server = fastify({ logger: false });
 
-  server.register(compress, { global: false });
+  server.register(compress, { global: true });
 
   server.get("/", async (request, reply) => {
-    if (request.query) {
-      reply.type("application/json").compress(data);
-    } else {
-      reply.type("application/json").send(data);
-    }
+    reply.type("application/json").send(data);
   });
 
   server.get("/ping", async (request, reply) => {
