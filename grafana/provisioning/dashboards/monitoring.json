@@ -102,25 +102,13 @@
             "uid": "PBFA97CFB590B2093"
           },
           "exemplar": true,
-          "expr": "envoy_cluster_upstream_cx_tx_bytes_total{service=\"$proxy_name\", envoy_cluster_name=\"web_cluster\"}",
+          "expr": "envoy_cluster_upstream_cx_tx_bytes_total{service=~\"$proxy_name|envoy-gateway\", envoy_cluster_name=~\"web_cluster|$proxy_name\"}",
           "format": "time_series",
           "hide": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "{{service}} → {{envoy_cluster_name}}",
+          "legendFormat": "{{instance}} → {{envoy_cluster_name}}",
           "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "exemplar": true,
-          "expr": "envoy_cluster_upstream_cx_tx_bytes_total{service=\"envoy-gateway\", envoy_cluster_name=\"$proxy_name\"}",
-          "hide": false,
-          "interval": "",
-          "legendFormat": "{{service}} → {{envoy_cluster_name}}",
-          "refId": "B"
         }
       ],
       "title": "Upstream - Sent",
@@ -280,7 +268,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "exemplar": true,
-          "expr": "envoy_server_memory_heap_size{service=\"$proxy_name\"}",
+          "expr": "envoy_server_memory_heap_size{service=~\"$proxy_name|envoy-gateway\"}",
           "hide": false,
           "interval": "",
           "legendFormat": "{{instance}}",
@@ -339,7 +327,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "exemplar": true,
-          "expr": "envoy_server_memory_allocated{service=\"$proxy_name\"}",
+          "expr": "envoy_server_memory_allocated{service=~\"$proxy_name|envoy-gateway\"}",
           "hide": false,
           "interval": "",
           "legendFormat": "{{instance}}",
@@ -359,8 +347,8 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 12,
+            "drawStyle": "bars",
+            "fillOpacity": 78,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -368,7 +356,7 @@
               "viz": false
             },
             "lineInterpolation": "linear",
-            "lineWidth": 1,
+            "lineWidth": 0,
             "pointSize": 1,
             "scaleDistribution": {
               "type": "linear"
@@ -425,12 +413,12 @@
             "uid": "PBFA97CFB590B2093"
           },
           "exemplar": true,
-          "expr": "envoy_http_downstream_cx_tx_bytes_total{service=\"$proxy_name\", envoy_http_conn_manager_prefix=\"admin\"}",
+          "expr": "envoy_http_downstream_cx_tx_bytes_total{envoy_http_conn_manager_prefix=\"admin\", service=~\"$proxy_name|envoy-gateway\"}",
           "format": "time_series",
           "instant": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "upstream → {{instance}} → downstream",
+          "legendFormat": "Total: upstream → {{instance}}",
           "refId": "A"
         }
       ],
@@ -447,8 +435,8 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 10,
+            "drawStyle": "bars",
+            "fillOpacity": 79,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -456,7 +444,7 @@
               "viz": false
             },
             "lineInterpolation": "linear",
-            "lineWidth": 1,
+            "lineWidth": 0,
             "pointSize": 1,
             "scaleDistribution": {
               "type": "linear"
@@ -465,7 +453,7 @@
             "spanNulls": false,
             "stacking": {
               "group": "A",
-              "mode": "none"
+              "mode": "normal"
             },
             "thresholdsStyle": {
               "mode": "off"
@@ -517,12 +505,12 @@
             "uid": "PBFA97CFB590B2093"
           },
           "exemplar": true,
-          "expr": "envoy_http_downstream_cx_rx_bytes_total{service=\"$proxy_name\", envoy_http_conn_manager_prefix=\"admin\"}",
+          "expr": "envoy_http_downstream_cx_rx_bytes_total{envoy_http_conn_manager_prefix=\"admin\", service=~\"$proxy_name|envoy-gateway\"}",
           "format": "time_series",
           "instant": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "downstream  → {{instance}} → upstream",
+          "legendFormat": "Total: downstream → {{instance}}",
           "refId": "A"
         }
       ],
@@ -853,6 +841,6 @@
   "timezone": "",
   "title": "Envoy Monitor",
   "uid": "sWlZ99Ynz",
-  "version": 19,
+  "version": 23,
   "weekStart": ""
 }
