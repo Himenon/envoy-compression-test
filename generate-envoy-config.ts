@@ -133,35 +133,7 @@ const createConfig = (option: Option) => {
                         routes: [
                           {
                             match: {
-                              path: "/ping",
-                            },
-                            route: {
-                              cluster: "web_cluster",
-                            },
-                          },
-                        ],
-                      },
-                      {
-                        name: "local_service",
-                        domains: ["*"],
-                        routes: [
-                          {
-                            match: {
-                              path: "/envoy-proxy-gzip",
-                            },
-                            route: {
-                              cluster: "web_cluster",
-                            },
-                          },
-                        ],
-                      },
-                      {
-                        name: "local_service",
-                        domains: ["*"],
-                        routes: [
-                          {
-                            match: {
-                              path: "/upstream-gzip",
+                              prefix: "/",
                             },
                             route: {
                               cluster: "web_cluster",
