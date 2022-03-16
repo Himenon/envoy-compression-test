@@ -27,7 +27,8 @@ yarn start
 docker compose exec attacker bash
 
 # Check
-curl http://envoy-gateway:8000/ping
+curl http://envoy-gateway:8000/ping -H "target: pure"
+curl http://envoy-gateway:8000/ping -H "target: compression"
 
 # Request  : envoy-gateway:8000 --------> envoy-proxy:8000 -> web:80
 # Response : envoy-gateway:8000 <-(gzip)- envoy-proxy:8000 <- web:80
