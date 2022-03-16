@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "generate:envoy-proxy": "yarn ts ./envoy-proxy/generate-envoy-config.ts",
+    "generate:envoy-proxy": "yarn ts ./generate-envoy-config.ts",
     "prettier:format": "prettier \"**/*.{js,jsx,ts,tsx,json,yml,yaml,md,html}\" --write .",
     "ts": "ts-node -P tsconfig.json"
   },

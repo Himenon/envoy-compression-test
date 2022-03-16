@@ -41,34 +41,6 @@ static_resources:
                             path: /envoy-proxy-gzip
                           route:
                             cluster: web_cluster
-                      typed_per_filter_config:
-                        envoy.filters.http.compressor:
-                          '@type': type.googleapis.com/envoy.extensions.filters.http.compressor.v3.Compressor
-                          response_direction_config:
-                            common_config:
-                              min_content_length: 100
-                              enabled:
-                                default_value: true
-                                runtime_key: response_compressor_enabled
-                              content_type:
-                                - text/html
-                                - application/json
-                                - text/css
-                                - application/javascript
-                            disable_on_etag_header: true
-                          request_direction_config:
-                            common_config:
-                              enabled:
-                                default_value: false
-                                runtime_key: request_compressor_enabled
-                          compressor_library:
-                            name: for_response
-                            typed_config:
-                              '@type': type.googleapis.com/envoy.extensions.compression.gzip.compressor.v3.Gzip
-                              memory_level: 1
-                              window_bits: 12
-                              compression_level: BEST_SPEED
-                              compression_strategy: DEFAULT_STRATEGY
                     - name: local_service
                       domains:
                         - '*'
@@ -78,6 +50,34 @@ static_resources:
                           route:
                             cluster: web_cluster
                 http_filters:
+                  - name: envoy.filters.http.compressor
+                    typed_config:
+                      '@type': type.googleapis.com/envoy.extensions.filters.http.compressor.v3.Compressor
+                      response_direction_config:
+                        common_config:
+                          min_content_length: 100
+                          enabled:
+                            default_value: true
+                            runtime_key: response_compressor_enabled
+                          content_type:
+                            - text/html
+                            - application/json
+                            - text/css
+                            - application/javascript
+                        disable_on_etag_header: true
+                      request_direction_config:
+                        common_config:
+                          enabled:
+                            default_value: false
+                            runtime_key: request_compressor_enabled
+                      compressor_library:
+                        name: for_response
+                        typed_config:
+                          '@type': type.googleapis.com/envoy.extensions.compression.gzip.compressor.v3.Gzip
+                          memory_level: 1
+                          window_bits: 12
+                          compression_level: BEST_SPEED
+                          compression_strategy: DEFAULT_STRATEGY
                   - name: envoy.filters.http.router
   clusters:
     - name: web_cluster
