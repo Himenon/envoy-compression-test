@@ -16,13 +16,26 @@ const createServer = () => {
 
   server.register(compress, { global: false });
 
-  server.get("/envoy-proxy-gzip", { compress: false }, async (request, reply) => {
-    reply.type("application/json").send(data);
+  server.get("/compression-proxy", async (request, reply) => {
+    if (request.query) {
+      reply.type("application/json").compress(data);
+    } else {
+      reply.type("application/json").send(data);
+    }
   });
 
-  server.get("/upstream-gzip", { compress: {} }, async (request, reply) => {
-    reply.type("application/json").send(data);
+
+  server.get("/non-compression-proxy", async (request, reply) => {
+    console.log({
+      query: request.query,
+    });
+    if (request.query) {
+      reply.type("application/json").compress(data);
+    } else {
+      reply.type("application/json").send(data);
+    }
   });
+
 
   server.get("/ping", async (request, reply) => {
     reply.send("pong\n");

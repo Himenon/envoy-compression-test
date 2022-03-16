@@ -31,11 +31,11 @@ curl http://envoy-gateway:8000/ping
 
 # Request  : envoy-gateway:8000 --------> envoy-proxy:8000 -> web:80
 # Response : envoy-gateway:8000 <-(gzip)- envoy-proxy:8000 <- web:80
-echo "GET http://envoy-gateway:8000/envoy-proxy-gzip" | ./vegeta attack -rate 1/1s > /dev/null
+echo "GET http://envoy-gateway:8000/compression-proxy" | ./vegeta attack -rate 1/1s > /dev/null
 
 # Request  : envoy-gateway:8000 -> envoy-proxy:8000 --------> web:80
 # Response : envoy-gateway:8000 <- envoy-proxy:8000 <-(gzip)- web:80
-echo "GET http://envoy-gateway:8000/upstream-gzip" | ./vegeta attack -rate 1/1s > /dev/null
+echo "GET http://envoy-gateway:8000/non-compression-proxy?compress=gzip" | ./vegeta attack -rate 1/1s > /dev/null
 ```
 
 ## Dashboard
