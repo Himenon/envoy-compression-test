@@ -16,26 +16,13 @@ const createServer = () => {
 
   server.register(compress, { global: false });
 
-  server.get("/compression-proxy", async (request, reply) => {
+  server.get("/", async (request, reply) => {
     if (request.query) {
       reply.type("application/json").compress(data);
     } else {
       reply.type("application/json").send(data);
     }
   });
-
-
-  server.get("/non-compression-proxy", async (request, reply) => {
-    console.log({
-      query: request.query,
-    });
-    if (request.query) {
-      reply.type("application/json").compress(data);
-    } else {
-      reply.type("application/json").send(data);
-    }
-  });
-
 
   server.get("/ping", async (request, reply) => {
     reply.send("pong\n");
