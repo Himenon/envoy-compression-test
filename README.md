@@ -29,8 +29,13 @@ docker compose exec attacker bash
 # Check
 curl http://envoy-gateway:8000/ping
 
-# Polling Start
-echo "GET http://envoy-gateway:8000" | ./vegeta attack -rate 1/1s > /dev/null
+# Request  : envoy-gateway:8000 --------> envoy-proxy:8000 -> web:80
+# Response : envoy-gateway:8000 <-(gzip)- envoy-proxy:8000 <- web:80
+echo "GET http://envoy-gateway:8000/proxy-gzip" | ./vegeta attack -rate 1/1s > /dev/null
+
+# Request  : envoy-gateway:8000 -> envoy-proxy:8000 --------> web:80
+# Response : envoy-gateway:8000 <- envoy-proxy:8000 <-(gzip)- web:80
+echo "GET http://envoy-gateway:8000/upstream-gzip" | ./vegeta attack -rate 1/1s > /dev/null
 ```
 
 ## Dashboard

@@ -6,5 +6,3 @@ WORKDIR /app
 COPY . /app
 RUN yarn install
 EXPOSE 80/tcp
-# CMD ["node", "/app/server.js"]
-# CMD ["yarn", "start"]

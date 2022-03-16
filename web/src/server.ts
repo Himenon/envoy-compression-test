@@ -20,7 +20,7 @@ const createServer = () => {
   });
 
   server.get("/ping", async (request, reply) => {
-    reply.send("pong");
+    reply.send("pong\n");
   });
 
   server.get("/metrics", async (req, reply) => {

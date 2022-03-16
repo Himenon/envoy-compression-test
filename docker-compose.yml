@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile
     networks:
       - envoymesh
-    command: ["tail", "-f", "/dev/null"]
+    tty: true
     depends_on:
       - web
 
@@ -50,7 +50,7 @@ services:
       - 80
     volumes:
       - ./web:/app
-    command: ["tail", "-f", "/dev/null"]
+    tty: true
 
   grafana:
     image: grafana/grafana-oss:8.3.3
