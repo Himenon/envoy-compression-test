@@ -2,8 +2,7 @@ import * as yaml from "js-yaml";
 import * as fs from "fs";
 import * as path from "path";
 
-export const stringify = (value: any): string =>
-  yaml.dump(value, { noRefs: true, lineWidth: 144 });
+export const stringify = (value: any): string => yaml.dump(value, { noRefs: true, lineWidth: 144 });
 
 const admin = {
   address: {
@@ -44,8 +43,7 @@ const clusters = [
 const compressorFilter = {
   name: "envoy.filters.http.compressor",
   typed_config: {
-    "@type":
-      "type.googleapis.com/envoy.extensions.filters.http.compressor.v3.Compressor",
+    "@type": "type.googleapis.com/envoy.extensions.filters.http.compressor.v3.Compressor",
     response_direction_config: {
       common_config: {
         min_content_length: 100,
@@ -53,12 +51,7 @@ const compressorFilter = {
           default_value: true,
           runtime_key: "response_compressor_enabled",
         },
-        content_type: [
-          "text/html",
-          "application/json",
-          "text/css",
-          "application/javascript",
-        ],
+        content_type: ["text/html", "application/json", "text/css", "application/javascript"],
       },
       disable_on_etag_header: true,
     },
@@ -73,8 +66,7 @@ const compressorFilter = {
     compressor_library: {
       name: "for_response",
       typed_config: {
-        "@type":
-          "type.googleapis.com/envoy.extensions.compression.gzip.compressor.v3.Gzip",
+        "@type": "type.googleapis.com/envoy.extensions.compression.gzip.compressor.v3.Gzip",
         memory_level: 1,
         window_bits: 12,
         compression_level: "BEST_SPEED",
@@ -100,16 +92,14 @@ const static_resources = {
             {
               name: "envoy.filters.network.http_connection_manager",
               typed_config: {
-                "@type":
-                  "type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager",
+                "@type": "type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager",
                 stat_prefix: "ingress_http",
                 codec_type: "AUTO",
                 access_log: [
                   {
                     name: "envoy.file_access_log",
                     typed_config: {
-                      "@type":
-                        "type.googleapis.com/envoy.extensions.access_loggers.file.v3.FileAccessLog",
+                      "@type": "type.googleapis.com/envoy.extensions.access_loggers.file.v3.FileAccessLog",
                       path: "/dev/stdout",
                     },
                   },
@@ -155,4 +145,3 @@ const config = {
 };
 
 fs.writeFileSync(path.join(__dirname, "envoy.yaml"), stringify(config), "utf-8");
-

@@ -40,8 +40,8 @@ echo "GET http://envoy-gateway:8000/upstream-gzip" | ./vegeta attack -rate 1/1s 
 
 ## Dashboard
 
-* Grafana: <http://localhost:5000>
-    * User: `admin`
-    * Password: `admin`
-* Open Dashboard
-    * <http://localhost:5000/d/sWlZ99Ynz/envoy-monitor?orgId=1>
+- Grafana: <http://localhost:5000>
+  - User: `admin`
+  - Password: `admin`
+- Open Dashboard
+  - <http://localhost:5000/d/sWlZ99Ynz/envoy-monitor?orgId=1>
