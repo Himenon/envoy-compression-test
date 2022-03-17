@@ -4,6 +4,8 @@ services:
     build:
       context: attacker
       dockerfile: Dockerfile
+    volumes:
+      - ./attacker/run.sh:/app/run.sh
     networks:
       - envoymesh
     tty: true
@@ -22,7 +24,8 @@ services:
       - 8000
       - 9090
     ports:
-      - 8000:8000
+      # Debug
+      # - 8000:8000
       - 9091:9090
     depends_on:
       - envoy-proxy-pure
