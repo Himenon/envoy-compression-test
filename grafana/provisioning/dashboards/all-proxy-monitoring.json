@@ -679,7 +679,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "exemplar": true,
-          "expr": "rate(envoy_http_downstream_rq_time_sum[15s])",
+          "expr": "rate(envoy_http_downstream_rq_time_sum{envoy_http_conn_manager_prefix=\"ingress_http\"}[15s])",
           "hide": false,
           "interval": "",
           "legendFormat": "{{instance}} → Downstream",
@@ -797,6 +797,6 @@
   "timezone": "",
   "title": "Envoy Monitor All",
   "uid": "ujY0QpPnz",
-  "version": 6,
+  "version": 8,
   "weekStart": ""
 }

@@ -60,7 +60,7 @@ Check Response Header: `transfer-encoding: chunked` or `content-encoding: *`
 
 ## Docs: How It Works
 
-* https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/compressor_filter#how-it-works
+- https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/compressor_filter#how-it-works
 
 ## Report
 
@@ -70,32 +70,41 @@ Check Response Header: `transfer-encoding: chunked` or `content-encoding: *`
 
 ### Summary
 
-#### Case 1: レスポンスの圧縮をenvoy-proxy-pure、webの両方で実施しない場合
+#### Case 1: レスポンスの圧縮を envoy-proxy-pure、web の両方で実施しない場合
 
-* レスポンスを圧縮せずにそのまま返す
-* envoy-gateway、envoy-proxy-pureの両方で同じサイズを観測する
+- レスポンスを圧縮せずにそのまま返す
+- envoy-gateway、envoy-proxy-pure の両方で同じサイズを観測する
 
-#### Case 2: レスポンスの圧縮をwebで実施、envoy-proxy-pureで実施しない
+#### Case 2: レスポンスの圧縮を web で実施、envoy-proxy-pure で実施しない
 
-* webで圧縮されたレスポンスはそのままenvoy-proxy-pure、envoy-gateway両方で同じサイズを観測する
+- web で圧縮されたレスポンスはそのまま envoy-proxy-pure、envoy-gateway 両方で同じサイズを観測する
 
-#### Case 3: レスポンスの圧縮をenvoy-proxy-compressionで実施、webで実施しない
+#### Case 3: レスポンスの圧縮を envoy-proxy-compression で実施、web で実施しない
 
-* envoy-proxy-compression到達時点で圧縮されていないことが観測される
-* envoy-gatewayではenvoy-proxy-compressionで圧縮されたレスポンスが観測される
-* Case 2のwebとenvoy-proxy-compressionの圧縮設定がやや違うため圧縮率が違う
+- envoy-proxy-compression 到達時点で圧縮されていないことが観測される
+- envoy-gateway では envoy-proxy-compression で圧縮されたレスポンスが観測される
+- Case 2 の web と envoy-proxy-compression の圧縮設定がやや違うため圧縮率が違う
 
-#### Case 4: レスポンスの圧縮をenvoy-proxy-compressionとwebで実施
+#### Case 4: レスポンスの圧縮を envoy-proxy-compression と web で実施
 
-* envoy-proxy-compression到達時点で圧縮されていることが観測される
-* envoy-gatewayではenvoy-proxy-compressionでは圧縮は実施されずそのまま通過する
+- envoy-proxy-compression 到達時点で圧縮されていることが観測される
+- envoy-gateway では envoy-proxy-compression では圧縮は実施されずそのまま通過する
+
+### Request Response の速度ランキング
+
+| Rank | Request | Response |
+| :--- | :------ | :------- |
+| 1    | Case 1  | Case 1   |
+| 2    | Case 3  | Case 3   |
+| 3    | Case 4  | Case 4   |
+| 4    | Case 2  | Case2    |
+
+→ Case 2, 4はwebでの圧縮を実施するため、envoyを通す場合は圧縮しないほうが速くなる
 
 ### その他
 
-* `Accept-Encoding: gzip`をつけなければenvoyのcompressionは実施されない
+- `Accept-Encoding: gzip`をつけなければ envoy の compression は実施されない
 
 ## TODO
 
-* [ ] Request / Response の時間計測
-* [ ] 圧縮率の計測
-
+- [ ] 圧縮率の計測
