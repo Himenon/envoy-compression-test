@@ -22,3 +22,14 @@ providers:
     options:
       path: /etc/grafana/provisioning/dashboards/monitoring.json
       foldersFromFilesStructure: false
+
+  - name: "For All Proxy Monitoring Compression"
+    orgId: 1
+    folder: "Test"
+    type: file
+    disableDeletion: true
+    updateIntervalSeconds: 5
+    allowUiUpdates: true
+    options:
+      path: /etc/grafana/provisioning/dashboards/all-proxy-monitoring.json
+      foldersFromFilesStructure: false
