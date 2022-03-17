@@ -21,9 +21,9 @@ const createServer = () => {
 
   server.get("/", async (request, reply) => {
     if (request.headers["web-compression"] === "true") {
-      reply.type("application/json").compress(data);
+      reply.type("application/json").header("web-compressed", "true").compress(data);
     } else {
-      reply.type("application/json").send(data);
+      reply.type("application/json").header("web-compressed", "false").send(data);
     }
   });
 

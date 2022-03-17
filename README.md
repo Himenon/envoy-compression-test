@@ -60,3 +60,7 @@ Check Response Header: `transfer-encoding: chunked` or `content-encoding: *`
   - Password: `admin`
 - Open Dashboard
   - <http://localhost:5000/d/sWlZ99Ynz/envoy-monitor?orgId=1>
+
+## Docs: How It Works
+
+* https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/compressor_filter#how-it-works
