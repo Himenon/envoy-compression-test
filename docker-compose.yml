@@ -1,23 +1,67 @@
 version: "3.7"
 services:
-  envoy:
+  attacker:
+    build:
+      context: attacker
+      dockerfile: Dockerfile
+    volumes:
+      - ./attacker/run.sh:/app/run.sh
+    networks:
+      - envoymesh
+    tty: true
+    depends_on:
+      - web
+
+  envoy-gateway:
     # https://github.com/envoyproxy/envoy/commit/a2a1e3eed4214a38608ec223859fcfa8fb679b14
+    # = 1.19
     image: envoyproxy/envoy-dev:a2a1e3eed4214a38608ec223859fcfa8fb679b14
     networks:
       - envoymesh
     volumes:
-      - ./envoy/envoy.yaml:/etc/envoy/envoy.yaml
+      - ./envoy-gateway/envoy.yaml:/etc/envoy/envoy.yaml
+    expose:
+      - 8000
+      - 9090
     ports:
-      - "8000:8000"
+      # Debug
+      # - 8000:8000
+      - 9091:9090
+    depends_on:
+      - envoy-proxy-pure
+      - envoy-proxy-compression
 
-  nginx:
-    image: nginx:stable
+  envoy-proxy-pure:
+    # https://github.com/envoyproxy/envoy/commit/a2a1e3eed4214a38608ec223859fcfa8fb679b14
+    # = 1.19
+    image: envoyproxy/envoy-dev:a2a1e3eed4214a38608ec223859fcfa8fb679b14
     networks:
       - envoymesh
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./envoy-proxy-pure/envoy.yaml:/etc/envoy/envoy.yaml
+    expose:
+      - 8000
+      - 9090
     ports:
-      - "9000:9000"
+      - 9092:9090
+    depends_on:
+      - web
+
+  envoy-proxy-compression:
+    # https://github.com/envoyproxy/envoy/commit/a2a1e3eed4214a38608ec223859fcfa8fb679b14
+    # = 1.19
+    image: envoyproxy/envoy-dev:a2a1e3eed4214a38608ec223859fcfa8fb679b14
+    networks:
+      - envoymesh
+    volumes:
+      - ./envoy-proxy-compression/envoy.yaml:/etc/envoy/envoy.yaml
+    expose:
+      - 8000
+      - 9090
+    ports:
+      - 9093:9090
+    depends_on:
+      - web
 
   web:
     build:
@@ -25,12 +69,13 @@ services:
       dockerfile: Dockerfile
     networks:
       - envoymesh
-    expose:
-      - 80
     environment:
       - PORT=80
-    ports:
-      - "10000:80"
+    expose:
+      - 80
+    volumes:
+      - ./web:/app
+    tty: true
 
   grafana:
     image: grafana/grafana-oss:8.3.3
@@ -51,8 +96,6 @@ services:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
       - "9090:9090"
-    depends_on:
-      - web
 
 networks:
   envoymesh: {}

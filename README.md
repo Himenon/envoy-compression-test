@@ -1,139 +1,101 @@
-# Envoy Local Ratelimit vs Nginx Ratelimit
-
-## Usage
-
-```bash
-$ docker -v
-Docker version 20.10.11, build dea9396
-```
-
-**Step 1**
-
-```bash
-$ docker compose build
-```
-
-**Step 2**
-
-```bash
-$ docker compose up
-```
-
-**Step 3**
-
-```bash
-# Via Envoy
-$ echo "GET http://localhost:8000/envoy" | vegeta attack -rate=20/s -duration=300s -timeout=10s | tee results.bin | vegeta report
-
-# Via nginx
-$ echo "GET http://localhost:9000/nginx" | vegeta attack -rate=20/s -duration=300s -timeout=10s | tee results.bin | vegeta report
-```
-
-**Step 4**
-
-try load test
-
-## Load Test
+# Envoy Compression Test
 
 ## Architecture
 
-| Application |  Port | Description                                        |
-| :---------- | ----: | :------------------------------------------------- |
-| envoy       |  8000 | Proxy to web.                                      |
-| nginx       |  9000 | Proxy to web.                                      |
-| web         | 10000 | A simple NodeJS web server.                        |
-| prometheus  |  9090 | Collect Metrics from the web.                      |
-| grafana     |  5000 | Visualization of the data collected by prometheus. |
+![アーキテクチャ](docs/architecture.png)
 
-![architecture](./ratelimit-architecture.png)
-
-## Development
+## Setup
 
 ```bash
-$ docker compose -f docker-compose.local.yml up
-
-$ cd web
-$ yarn start
+docker compose up -d
 ```
 
-## Load Test
-
-Use [tsenart/vegeta](https://github.com/tsenart/vegeta).
-
-### via envoy
+### Web Server Setup
 
 ```bash
-$ echo "GET http://localhost:8000" | vegeta attack -rate=400/s -duration=1s | tee results.bin | vegeta report
-Requests      [total, rate, throughput]         400, 401.16, 220.38
-Duration      [total, attack, wait]             998.274ms, 997.107ms, 1.167ms
-Latencies     [min, mean, 50, 90, 95, 99, max]  920.358µs, 15.606ms, 2.893ms, 67.263ms, 92.738ms, 103.335ms, 105.132ms
-Bytes In      [total, mean]                     122810, 307.02
-Bytes Out     [total, mean]                     0, 0.00
-Success       [ratio]                           55.00%
-Status Codes  [code:count]                      200:220  429:180
-Error Set:
-429 Too Many Requests
+docker compose exec web sh
 
-$ sleep 10 # x tokens_per_fill = 200 [token]
-
-$ echo "GET http://localhost:8000" | vegeta attack -rate=400/s -duration=2s | tee results.bin | vegeta report
-Requests      [total, rate, throughput]         800, 400.51, 120.10
-Duration      [total, attack, wait]             1.998s, 1.997s, 937.189µs
-Latencies     [min, mean, 50, 90, 95, 99, max]  753.851µs, 1.902ms, 1.267ms, 2.971ms, 3.659ms, 11.707ms, 21.521ms
-Bytes In      [total, mean]                     140530, 175.66
-Bytes Out     [total, mean]                     0, 0.00
-Success       [ratio]                           30.00%
-Status Codes  [code:count]                      200:240  429:560
-Error Set:
-429 Too Many Requests
-
-$ sleep 10
-
-$ echo "GET http://localhost:8000" | vegeta attack -rate=400/s -duration=4s | tee results.bin | vegeta report
-Requests      [total, rate, throughput]         1600, 400.29, 70.03
-Duration      [total, attack, wait]             3.998s, 3.997s, 1.185ms
-Latencies     [min, mean, 50, 90, 95, 99, max]  727.362µs, 1.676ms, 1.301ms, 2.468ms, 2.99ms, 9.607ms, 15.653ms
-Bytes In      [total, mean]                     175990, 109.99
-Bytes Out     [total, mean]                     0, 0.00
-Success       [ratio]                           17.50%
-Status Codes  [code:count]                      200:280  429:1320
-Error Set:
-429 Too Many Requests
+yarn start
 ```
 
-## via nginx
+### Attacker Setup
+
+[Attack Scenario](./attacker/run.sh)
 
 ```bash
-$ echo "GET http://localhost:9000" | vegeta attack -rate=400/s -duration=1s | tee results.bin | vegeta report
-Requests      [total, rate, throughput]         400, 400.92, 22.10
-Duration      [total, attack, wait]             9.954s, 997.703ms, 8.956s
-Latencies     [min, mean, 50, 90, 95, 99, max]  693.302µs, 2.337s, 40.091ms, 7.526s, 8.479s, 8.997s, 8.999s
-Bytes In      [total, mean]                     149550, 373.88
-Bytes Out     [total, mean]                     0, 0.00
-Success       [ratio]                           55.00%
-Status Codes  [code:count]                      200:220  429:180
-Error Set:
-429 Too Many Requests
+docker compose exec attacker bash
 
-$ echo "GET http://localhost:9000" | vegeta attack -rate=400/s -duration=2s | tee results.bin | vegeta report
-Requests      [total, rate, throughput]         800, 400.63, 21.91
-Duration      [total, attack, wait]             10.954s, 1.997s, 8.957s
-Latencies     [min, mean, 50, 90, 95, 99, max]  725.961µs, 1.395s, 1.213ms, 6.584s, 8.483s, 9s, 9.005s
-Bytes In      [total, mean]                     224610, 280.76
-Bytes Out     [total, mean]                     0, 0.00
-Success       [ratio]                           30.00%
-Status Codes  [code:count]                      200:240  429:560
-Error Set:
-429 Too Many Requests
+# Communication Check
+curl http://envoy-gateway:8000/ping -H "target-proxy: pure"
+curl http://envoy-gateway:8000/ping -H "target-proxy: compression"
 
-$ echo "GET http://localhost:9000" | vegeta attack -rate=400/s -duration=4s | tee results.bin | vegeta report
-Requests      [total, rate, throughput]         1600, 400.26, 21.63
-Duration      [total, attack, wait]             12.944s, 3.997s, 8.946s
-Latencies     [min, mean, 50, 90, 95, 99, max]  664.334µs, 922.297ms, 1.17ms, 4.683s, 8.479s, 9s, 9.005s
-Bytes In      [total, mean]                     374760, 234.22
-Bytes Out     [total, mean]                     0, 0.00
-Success       [ratio]                           17.50%
-Status Codes  [code:count]                      200:280  429:1320
-Error Set:
-429 Too Many Requests
+# Request  : envoy-gateway:8000 --------> envoy-proxy-pure:8000 --------> web:80
+# Response : envoy-gateway:8000 <-------- envoy-proxy-pure:8000 <-------- web:80
+curl http://envoy-gateway:8000 -H "target-proxy: pure" -v > /dev/null
+echo "GET http://envoy-gateway:8000" | ./vegeta attack -rate 1/1s -header "target-proxy: pure" > /dev/null
+
+# Request  : envoy-gateway:8000 --------> envoy-proxy-pure:8000 --------> web:80
+# Response : envoy-gateway:8000 <-------- envoy-proxy-pure:8000 <-(gzip)- web:80
+curl http://envoy-gateway:8000 -H "target-proxy: pure" -H "web-compression: true" -H "accept-encoding: gzip" -v > /dev/null
+echo "GET http://envoy-gateway:8000" | ./vegeta attack -rate 1/1s -header "target-proxy: pure" -header "web-compression: true" -header "accept-encoding: gzip" > /dev/null
+
+# Request  : envoy-gateway:8000 --------> envoy-proxy-compression:8000 --------> web:80
+# Response : envoy-gateway:8000 <-(gzip)- envoy-proxy-compression:8000 <-------- web:80
+curl http://envoy-gateway:8000 -H "target-proxy: compression" -H "accept-encoding: gzip" -v > /dev/null
+echo "GET http://envoy-gateway:8000" | ./vegeta attack -rate 1/1s -header "target-proxy: compression" -header "accept-encoding: gzip" > /dev/null
+
+# Request  : envoy-gateway:8000 --------> envoy-proxy-compression:8000 --------> web:80
+# Response : envoy-gateway:8000 <-(gzip)- envoy-proxy-compression:8000 <-(gzip)- web:80
+curl http://envoy-gateway:8000 -H "target-proxy: compression" -H "web-compression: true" -H "accept-encoding: gzip" -v > /dev/null
+echo "GET http://envoy-gateway:8000" | ./vegeta attack -rate 1/1s -header "target-proxy: compression" -header "web-compression: true" -header "accept-encoding: gzip" > /dev/null
 ```
+
+Check Response Header: `transfer-encoding: chunked` or `content-encoding: *`
+
+## Dashboard
+
+- Grafana: <http://localhost:5000>
+  - User: `admin`
+  - Password: `admin`
+
+## Docs: How It Works
+
+* https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/compressor_filter#how-it-works
+
+## Report
+
+[Attack Scenario](./attacker/run.sh)
+
+![Report 1](./docs/compression-result.png)
+
+### Summary
+
+#### Case 1: レスポンスの圧縮をenvoy-proxy-pure、webの両方で実施しない場合
+
+* レスポンスを圧縮せずにそのまま返す
+* envoy-gateway、envoy-proxy-pureの両方で同じサイズを観測する
+
+#### Case 2: レスポンスの圧縮をwebで実施、envoy-proxy-pureで実施しない
+
+* webで圧縮されたレスポンスはそのままenvoy-proxy-pure、envoy-gateway両方で同じサイズを観測する
+
+#### Case 3: レスポンスの圧縮をenvoy-proxy-compressionで実施、webで実施しない
+
+* envoy-proxy-compression到達時点で圧縮されていないことが観測される
+* envoy-gatewayではenvoy-proxy-compressionで圧縮されたレスポンスが観測される
+* Case 2のwebとenvoy-proxy-compressionの圧縮設定がやや違うため圧縮率が違う
+
+#### Case 4: レスポンスの圧縮をenvoy-proxy-compressionとwebで実施
+
+* envoy-proxy-compression到達時点で圧縮されていることが観測される
+* envoy-gatewayではenvoy-proxy-compressionでは圧縮は実施されずそのまま通過する
+
+### その他
+
+* `Accept-Encoding: gzip`をつけなければenvoyのcompressionは実施されない
+
+## TODO
+
+* [ ] Request / Response の時間計測
+* [ ] 圧縮率の計測
+

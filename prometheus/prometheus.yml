@@ -4,3 +4,30 @@ scrape_configs:
   - job_name: "web"
     static_configs:
       - targets: ["web:80"]
+
+  - job_name: "envoy-gateway"
+    metrics_path: /stats/prometheus
+    scheme: http
+    static_configs:
+      - targets:
+          - "envoy-gateway:9090"
+        labels:
+          service: envoy-gateway
+
+  - job_name: "envoy-proxy-pure"
+    metrics_path: /stats/prometheus
+    scheme: http
+    static_configs:
+      - targets:
+          - "envoy-proxy-pure:9090"
+        labels:
+          service: envoy-proxy-pure
+
+  - job_name: "envoy-proxy-compression"
+    metrics_path: /stats/prometheus
+    scheme: http
+    static_configs:
+      - targets:
+          - "envoy-proxy-compression:9090"
+        labels:
+          service: envoy-proxy-compression

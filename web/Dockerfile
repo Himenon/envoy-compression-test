@@ -1,18 +1,8 @@
 FROM node:16.13.1-alpine AS BUILDER
 
+ENV PORT 80
+
 WORKDIR /app
 COPY . /app
-RUN yarn install && yarn build
-
-FROM node:16.13.1-alpine
-
-WORKDIR /app
-
-COPY --from=BUILDER /app/build/server.js /app/server.js
-
-ENV PORT 80
-ENV NODE_ENV production
-
+RUN yarn install
 EXPOSE 80/tcp
-
-CMD ["node", "/app/server.js"]
