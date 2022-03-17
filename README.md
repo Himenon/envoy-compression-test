@@ -20,7 +20,7 @@ yarn start
 
 ### Attacker Setup
 
-![Attack Scenario](./attacker/run.sh)
+[Attack Scenario](./attacker/run.sh)
 
 ```bash
 docker compose exec attacker bash
@@ -57,8 +57,6 @@ Check Response Header: `transfer-encoding: chunked` or `content-encoding: *`
 - Grafana: <http://localhost:5000>
   - User: `admin`
   - Password: `admin`
-- Open Dashboard
-  - <http://localhost:5000/d/sWlZ99Ynz/envoy-monitor?orgId=1>
 
 ## Docs: How It Works
 
@@ -92,6 +90,9 @@ Check Response Header: `transfer-encoding: chunked` or `content-encoding: *`
 * envoy-proxy-compression到達時点で圧縮されていることが観測される
 * envoy-gatewayではenvoy-proxy-compressionでは圧縮は実施されずそのまま通過する
 
+### その他
+
+* `Accept-Encoding: gzip`をつけなければenvoyのcompressionは実施されない
 
 ## TODO
 
