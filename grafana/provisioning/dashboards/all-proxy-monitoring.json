@@ -796,30 +796,7 @@
   "style": "dark",
   "tags": [],
   "templating": {
-    "list": [
-      {
-        "current": {
-          "selected": false,
-          "text": "envoy-proxy-pure",
-          "value": "envoy-proxy-pure"
-        },
-        "definition": "envoy_cluster_upstream_cx_tx_bytes_total",
-        "hide": 0,
-        "includeAll": false,
-        "multi": false,
-        "name": "proxy_name",
-        "options": [],
-        "query": {
-          "query": "envoy_cluster_upstream_cx_tx_bytes_total",
-          "refId": "StandardVariableQuery"
-        },
-        "refresh": 1,
-        "regex": ".*job=\"(.*?)\".*",
-        "skipUrlSync": false,
-        "sort": 0,
-        "type": "query"
-      }
-    ]
+    "list": []
   },
   "time": {
     "from": "2022-03-17T04:07:12.498Z",
@@ -829,6 +806,6 @@
   "timezone": "",
   "title": "Envoy Monitor All",
   "uid": "ujY0QpPnz",
-  "version": 1,
+  "version": 2,
   "weekStart": ""
 }
