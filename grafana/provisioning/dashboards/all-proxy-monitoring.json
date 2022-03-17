@@ -22,7 +22,6 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": 4,
-  "iteration": 1647490380898,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -356,7 +355,7 @@
               "tooltip": false,
               "viz": false
             },
-            "lineInterpolation": "stepAfter",
+            "lineInterpolation": "linear",
             "lineWidth": 0,
             "pointSize": 5,
             "scaleDistribution": {
@@ -438,7 +437,7 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
-            "drawStyle": "bars",
+            "drawStyle": "line",
             "fillOpacity": 100,
             "gradientMode": "none",
             "hideFrom": {
@@ -446,7 +445,7 @@
               "tooltip": false,
               "viz": false
             },
-            "lineInterpolation": "stepAfter",
+            "lineInterpolation": "linear",
             "lineWidth": 0,
             "pointSize": 5,
             "scaleDistribution": {
@@ -527,9 +526,10 @@
           "custom": {
             "axisLabel": "",
             "axisPlacement": "auto",
+            "axisSoftMin": 0,
             "barAlignment": 0,
             "drawStyle": "line",
-            "fillOpacity": 10,
+            "fillOpacity": 29,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -538,7 +538,7 @@
             },
             "lineInterpolation": "linear",
             "lineWidth": 1,
-            "pointSize": 1,
+            "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
             },
@@ -553,95 +553,6 @@
             }
           },
           "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "decbytes"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 6,
-        "x": 0,
-        "y": 14
-      },
-      "id": 15,
-      "links": [],
-      "maxDataPoints": 100,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom"
-        },
-        "tooltip": {
-          "mode": "single"
-        }
-      },
-      "pluginVersion": "8.3.3",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "exemplar": true,
-          "expr": "envoy_http_downstream_cx_tx_bytes_total{envoy_http_conn_manager_prefix=\"admin\"}",
-          "format": "time_series",
-          "instant": false,
-          "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "Total: upstream → {{instance}}",
-          "refId": "A"
-        }
-      ],
-      "title": "Downstream Global - Sent",
-      "type": "timeseries"
-    },
-    {
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 1,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "normal"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -655,19 +566,17 @@
               }
             ]
           },
-          "unit": "decbytes"
+          "unit": "msec"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 7,
-        "w": 6,
-        "x": 6,
+        "h": 8,
+        "w": 8,
+        "x": 0,
         "y": 14
       },
-      "id": 17,
-      "links": [],
-      "maxDataPoints": 100,
+      "id": 21,
       "options": {
         "legend": {
           "calcs": [],
@@ -678,7 +587,6 @@
           "mode": "single"
         }
       },
-      "pluginVersion": "8.3.3",
       "targets": [
         {
           "datasource": {
@@ -686,16 +594,99 @@
             "uid": "PBFA97CFB590B2093"
           },
           "exemplar": true,
-          "expr": "envoy_http_downstream_cx_rx_bytes_total{envoy_http_conn_manager_prefix=\"admin\"}",
-          "format": "time_series",
-          "instant": false,
+          "expr": "rate(envoy_cluster_upstream_rq_time_sum[15s])",
+          "hide": false,
           "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "Total: downstream → {{instance}}",
-          "refId": "A"
+          "legendFormat": "{{instance}} → {{envoy_cluster_name}}",
+          "refId": "B"
         }
       ],
-      "title": "Downstream Global - Received",
+      "title": "Request Time",
+      "type": "timeseries"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 29,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 9,
+        "x": 8,
+        "y": 14
+      },
+      "id": 20,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "exemplar": true,
+          "expr": "rate(envoy_http_downstream_rq_time_sum[15s])",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "{{instance}} → Downstream",
+          "refId": "B"
+        }
+      ],
+      "title": "Response Time",
       "type": "timeseries"
     },
     {
@@ -709,7 +700,7 @@
             "axisPlacement": "auto",
             "axisSoftMin": 0,
             "barAlignment": 0,
-            "drawStyle": "bars",
+            "drawStyle": "line",
             "fillOpacity": 100,
             "gradientMode": "none",
             "hideFrom": {
@@ -717,7 +708,7 @@
               "tooltip": false,
               "viz": false
             },
-            "lineInterpolation": "stepAfter",
+            "lineInterpolation": "linear",
             "lineWidth": 0,
             "pointSize": 5,
             "scaleDistribution": {
@@ -754,8 +745,8 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 12,
-        "x": 12,
+        "w": 7,
+        "x": 17,
         "y": 14
       },
       "id": 10,
@@ -799,13 +790,13 @@
     "list": []
   },
   "time": {
-    "from": "2022-03-17T04:07:12.498Z",
-    "to": "2022-03-17T04:09:24.004Z"
+    "from": "2022-03-17T05:08:28.873Z",
+    "to": "2022-03-17T05:15:27.414Z"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Envoy Monitor All",
   "uid": "ujY0QpPnz",
-  "version": 2,
+  "version": 6,
   "weekStart": ""
 }
