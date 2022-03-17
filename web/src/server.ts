@@ -14,10 +14,17 @@ console.log(`Prepare Large Data Cached: ${Buffer.byteLength(JSON.stringify(data)
 const createServer = () => {
   const server = fastify({ logger: false });
 
-  server.register(compress, { global: true, zlibOptions: { level: 1 }, });
+  /**
+   * brotli is Too Slow
+   */
+  server.register(compress, { global: false, encodings: ["gzip"] });
 
   server.get("/", async (request, reply) => {
-    reply.type("application/json").send(data);
+    if (request.headers["web-compression"] === "true") {
+      reply.type("application/json").compress(data);
+    } else {
+      reply.type("application/json").send(data);
+    }
   });
 
   server.get("/ping", async (request, reply) => {

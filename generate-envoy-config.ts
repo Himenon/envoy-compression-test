@@ -51,6 +51,9 @@ const createConfig = (option: Option) => {
     },
   ];
 
+  /**
+   * @see https://www.envoyproxy.io/docs/envoy/v1.19.0/api-v3/extensions/filters/http/compressor/v3/compressor.proto.html
+   */
   const compressorFilter = {
     name: "envoy.filters.http.compressor",
     typed_config: {
@@ -78,8 +81,18 @@ const createConfig = (option: Option) => {
         name: "for_response",
         typed_config: {
           "@type": "type.googleapis.com/envoy.extensions.compression.gzip.compressor.v3.Gzip",
-          memory_level: 1,
+          /**
+           * 1-9間。Memをたくさん使って高圧縮になる
+           */
+          memory_level: 9,
+          /**
+           * メモリ使用量を犠牲にして高圧縮になる
+           */
           window_bits: 12,
+          /**
+           * BEST_COMPRESSION ... 遅いくせになんか圧縮率も悪い気がする
+           * BEST_SPEED       ... 最速でやる
+           */
           compression_level: "BEST_SPEED",
           compression_strategy: "DEFAULT_STRATEGY",
         },

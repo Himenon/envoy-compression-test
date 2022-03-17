@@ -33,14 +33,14 @@ static_resources:
                       - match:
                           prefix: "/"
                           headers:
-                          - name: "target"
+                          - name: "target-proxy"
                             exact_match: "pure"
                         route:
                           cluster: envoy-proxy-pure
                       - match:
                           prefix: "/"
                           headers:
-                          - name: target
+                          - name: target-proxy
                             exact_match: compression
                         route:
                           cluster: envoy-proxy-compression
