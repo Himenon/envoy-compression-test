@@ -42,8 +42,8 @@ echo "GET http://envoy-gateway:8000" | ./vegeta attack -rate 1/1s -header "targe
 
 # Request  : envoy-gateway:8000 --------> envoy-proxy-compression:8000 --------> web:80
 # Response : envoy-gateway:8000 <-(gzip)- envoy-proxy-compression:8000 <-------- web:80
-curl http://envoy-gateway:8000 -H "target-proxy: compression" -v > /dev/null
-echo "GET http://envoy-gateway:8000" | ./vegeta attack -rate 1/1s -header "target-proxy: compression" > /dev/null
+curl http://envoy-gateway:8000 -H "target-proxy: compression" -H "accept-encoding: gzip" -v > /dev/null
+echo "GET http://envoy-gateway:8000" | ./vegeta attack -rate 1/1s -header "target-proxy: compression" -header "accept-encoding: gzip" > /dev/null
 
 # Request  : envoy-gateway:8000 --------> envoy-proxy-compression:8000 --------> web:80
 # Response : envoy-gateway:8000 <-(gzip)- envoy-proxy-compression:8000 <-(gzip)- web:80
